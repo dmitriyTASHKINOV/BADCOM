@@ -11,7 +11,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -26,8 +26,8 @@ public class UserController {
         model.addAttribute("user", user);
         return "userInfo";
     }
-    @GetMapping("/test")
+    @GetMapping("/hello")
     public String test(){
-        return "test";
+        return "hello";
     }
 }
