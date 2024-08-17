@@ -58,8 +58,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usersRepository.save(user);
+        User existingUser = usersRepository.findById(user.getId()).orElse(null);
+        if (existingUser != null) {
+            if (user.getPassword() == null || user.getPassword().isEmpty() || user.getPassword().equals(existingUser.getPassword())) {
+                user.setPassword(existingUser.getPassword()); // Используем существующий хеш пароля
+            } else {
+                user.setPassword(passwordEncoder.encode(user.getPassword())); // Хешируем новый пароль
+            }
+            usersRepository.save(user);
+        }
     }
     @PostConstruct
     @Transactional
